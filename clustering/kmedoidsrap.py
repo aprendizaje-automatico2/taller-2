@@ -10,12 +10,12 @@ plt.style.use("seaborn-whitegrid")
 
 
 class KMedoidsClass:
-    def __init__(self,data,k,iters):
+    def __init__(self,data,n_clusters,iters):
         self.data= data
-        self.k = k
+        self.n_clusters = n_clusters
         self.iters = iters
-        self.medoids = np.array([data[i] for i in range(self.k)])
-        self.colors = np.array(np.random.randint(0, 255, size =(self.k, 4)))/255
+        self.medoids = np.array([data[i] for i in range(self.n_clusters)])
+        self.colors = np.array(np.random.randint(0, 255, size =(self.n_clusters, 4)))/255
         self.colors[:,3]=1
 
     def manhattan(self,p1, p2):
@@ -33,27 +33,27 @@ class KMedoidsClass:
         tmp_clusters = {k:np.array(v) for k,v in tmp_clusters.items()}
         return tmp_clusters, cst
 
-    def fit(self):
+    def fit(self,data):
 
         samples,_ = self.data.shape
 
         self.clusters, cost = self.get_costs(data=self.data, medoids=self.medoids)
         count = 0
 
-        colors =  np.array(np.random.randint(0, 255, size =(self.k, 4)))/255
-        colors[:,3]=1
+        # colors =  np.array(np.random.randint(0, 255, size =(self.n_clusters, 4)))/255
+        # colors[:,3]=1
 
-        plt.title(f"Step : 0")
-        [plt.scatter(self.clusters[t][:, 0], self.clusters[t][:, 1], marker="*", s=100,
-                                        color = colors[t]) for t in range(self.k)]
-        plt.scatter(self.medoids[:, 0], self.medoids[:, 1], s=200, color=colors)
-        plt.show()
+        # plt.title(f"Step : 0")
+        # [plt.scatter(self.clusters[t][:, 0], self.clusters[t][:, 1], marn_clusterser="*", s=100,
+        #                                 color = colors[t]) for t in range(self.n_clusters)]
+        # plt.scatter(self.medoids[:, 0], self.medoids[:, 1], s=200, color=colors)
+        # plt.show()
 
         while True:
             swap = False
             for i in range(samples):
                 if not i in self.medoids:
-                    for j in range(self.k):
+                    for j in range(self.n_clusters):
                         tmp_meds = self.medoids.copy()
                         tmp_meds[j] = i
                         clusters_, cost_ = self.get_costs(data=self.data, medoids=tmp_meds)
@@ -66,7 +66,7 @@ class KMedoidsClass:
                             # print(f"Medoids Changed to: {self.medoids}.")
                             # plt.title(f"Step : {count+1}")  
                             # [plt.scatter(self.clusters[t][:, 0], self.clusters[t][:, 1], marker="*", s=100,
-                            #             color = colors[t]) for t in range(self.k)]
+                            #             color = colors[t]) for t in range(self.n_clusters)]
                             # plt.scatter(self.medoids[:, 0], self.medoids[:, 1], s=200, color=colors)
                             # plt.show()
             count+=1
@@ -79,14 +79,14 @@ class KMedoidsClass:
                 break
         return self
 
-#dt = np.random.randint(0,100, (100,2))
-dt = np.asarray([[1, 2], [1, 4], [1, 0],
-                [4, 2], [4, 4], [4, 0]])
-kmedoid = KMedoidsClass(dt,2,5)
-kmedoid.fit()
+dt = np.random.randint(0,100, (100,2))
+#dt = np.asarray([[1, 2], [1, 4], [1, 0],
+#                [4, 2], [4, 4], [4, 0]])
+kmedoid = KMedoidsClass(dt,4,200)
+kmedoid.fit(dt)
 #print(f"Medoids Changed to: {self.medoids}.")
 plt.title(f"Final step :")  
 [plt.scatter(kmedoid.clusters[t][:, 0], kmedoid.clusters[t][:, 1], marker="*", s=100,
-            color = kmedoid.colors[t]) for t in range(kmedoid.k)]
+            color = kmedoid.colors[t]) for t in range(kmedoid.n_clusters)]
 plt.scatter(kmedoid.medoids[:, 0], kmedoid.medoids[:, 1], s=200, color=kmedoid.colors)
 plt.show()
