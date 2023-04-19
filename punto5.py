@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import numpy as np
 from clustering.kmeansrap import KMeansr
-from clustering.kmedoidsrap import KMedoidsClass
+from clustering.kmedoidsrap import KMedoidsr
 
 # Generamos datos aleatorios (pero fijos)
 X, y = make_blobs(
@@ -255,10 +255,10 @@ for n_clusters in range_n_clusters:
 
     # Initialize the clusterer with n_clusters value and a random generator
     # seed of 10 for reproducibility.
-    clusterer = KMedoidsClass(X, n_clusters,200)
-    clusterer.fit()
+    clusterer = KMedoidsr(n_clusters,200)
+    clusterer.fit(X)
     
-    cluster_labels = clusterer.clusters
+    cluster_labels = clusterer.labels
 
     # The silhouette_score gives the average value for all the samples.
     # This gives a perspective into the density and separation of the formed
@@ -318,7 +318,7 @@ for n_clusters in range_n_clusters:
     )
 
     # Labeling the clusters
-    centers = clusterer.cluster_centers_
+    centers = clusterer.medoids
     # Draw white circles at cluster centers
     ax2.scatter(
         centers[:, 0],

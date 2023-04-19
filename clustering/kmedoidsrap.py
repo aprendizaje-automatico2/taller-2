@@ -2,91 +2,76 @@
 # whose dissimilarities with all the other points in the cluster are minimum. 
 # The dissimilarity of the medoid(Ci) and object(Pi) is calculated by using E = |Pi – Ci|  -->   Distancia de manhatan?
 
-
 import numpy as np
 import matplotlib.pyplot as plt
 
-plt.style.use("seaborn-whitegrid")
+##  implementacion propia
+import numpy as np
 
+import numpy as np
 
-class KMedoidsClass:
-    def __init__(self,data,n_clusters,iters):
-        self.data= data
+class KMedoidsr:
+    def __init__(self, n_clusters=2, max_iter=100):
         self.n_clusters = n_clusters
-        self.iters = iters
-        self.medoids = np.array([data[i] for i in range(self.n_clusters)])
-        self.colors = np.array(np.random.randint(0, 255, size =(self.n_clusters, 4)))/255
-        self.colors[:,3]=1
-
-    def manhattan(self,p1, p2):
-        return np.abs((p1[0]-p2[0])) + np.abs((p1[1]-p2[1]))
-
-    def get_costs(self, medoids, data):
-        tmp_clusters = {i:[] for i in range(len(medoids))}
-        cst = 0
-        for d in data:
-            dst = np.array([self.manhattan(d, md) for md in medoids])
-            c = dst.argmin()
-            tmp_clusters[c].append(d)
-            cst+=dst.min()
-
-        tmp_clusters = {k:np.array(v) for k,v in tmp_clusters.items()}
-        return tmp_clusters, cst
-
-    def fit(self,data):
-
-        samples,_ = self.data.shape
-
-        self.clusters, cost = self.get_costs(data=self.data, medoids=self.medoids)
-        count = 0
-
-        # colors =  np.array(np.random.randint(0, 255, size =(self.n_clusters, 4)))/255
-        # colors[:,3]=1
-
-        # plt.title(f"Step : 0")
-        # [plt.scatter(self.clusters[t][:, 0], self.clusters[t][:, 1], marn_clusterser="*", s=100,
-        #                                 color = colors[t]) for t in range(self.n_clusters)]
-        # plt.scatter(self.medoids[:, 0], self.medoids[:, 1], s=200, color=colors)
-        # plt.show()
-
-        while True:
-            swap = False
-            for i in range(samples):
-                if not i in self.medoids:
-                    for j in range(self.n_clusters):
-                        tmp_meds = self.medoids.copy()
-                        tmp_meds[j] = i
-                        clusters_, cost_ = self.get_costs(data=self.data, medoids=tmp_meds)
-
-                        if cost_<cost:
-                            self.medoids = tmp_meds
-                            cost = cost_
-                            swap = True
-                            self.clusters = clusters_
-                            # print(f"Medoids Changed to: {self.medoids}.")
-                            # plt.title(f"Step : {count+1}")  
-                            # [plt.scatter(self.clusters[t][:, 0], self.clusters[t][:, 1], marker="*", s=100,
-                            #             color = colors[t]) for t in range(self.n_clusters)]
-                            # plt.scatter(self.medoids[:, 0], self.medoids[:, 1], s=200, color=colors)
-                            # plt.show()
-            count+=1
-
-            if count>=self.iters:
-                print("End of the iterations.")
+        self.max_iter = max_iter
+    
+    def fit(self, X):
+        # Inicialización de los centroides como puntos aleatorios del conjunto de datos
+        self.medoids = X[np.random.choice(len(X), self.n_clusters, replace=False)]
+        
+        # Asignación inicial de los puntos a los clusters
+        self.labels = np.argmin(np.linalg.norm(X[:, np.newaxis, :] - self.medoids, axis=2), axis=1)
+        
+        # Bucle principal
+        for _ in range(self.max_iter):
+            # Cálculo de la distancia entre los puntos y los medoids de su cluster
+            distances = np.zeros((len(X), self.n_clusters))
+            for i, x in enumerate(X):
+                for j, medoid in enumerate(self.medoids):
+                    distances[i, j] = np.sum(np.abs(x - medoid))
+            
+            # Creación de una copia de las asignaciones actuales
+            old_labels = np.copy(self.labels)
+            
+            # Actualización de los clusters
+            for j in range(self.n_clusters):
+                mask = self.labels == j
+                if np.sum(mask) > 0:
+                    cluster_distances = distances[mask, :]
+                    medoid_index = np.argmin(np.sum(cluster_distances, axis=0))
+                    self.medoids[j] = X[mask][medoid_index]
+            
+            # Asignación de los puntos a los clusters
+            self.labels = np.argmin(distances, axis=1)
+            
+            # Comprobación de convergencia
+            if np.all(old_labels == self.labels):
                 break
-            if not swap:
-                print("No changes.")
-                break
+        
         return self
+    
+    def predict(self, X):
+        distances = np.zeros((len(X), self.n_clusters))
+        for i, x in enumerate(X):
+            for j, medoid in enumerate(self.medoids):
+                distances[i, j] = np.sum(np.abs(x - medoid))
+        return np.argmin(distances, axis=1)
 
-dt = np.random.randint(0,100, (100,2))
-#dt = np.asarray([[1, 2], [1, 4], [1, 0],
-#                [4, 2], [4, 4], [4, 0]])
-kmedoid = KMedoidsClass(dt,4,200)
-kmedoid.fit(dt)
-#print(f"Medoids Changed to: {self.medoids}.")
-plt.title(f"Final step :")  
-[plt.scatter(kmedoid.clusters[t][:, 0], kmedoid.clusters[t][:, 1], marker="*", s=100,
-            color = kmedoid.colors[t]) for t in range(kmedoid.n_clusters)]
-plt.scatter(kmedoid.medoids[:, 0], kmedoid.medoids[:, 1], s=200, color=kmedoid.colors)
+
+# Generación de datos aleatorios
+np.random.seed(42)
+X = np.random.rand(100, 2)
+
+# Creación de una instancia de la clase KMedoids
+kmedoids = KMedoidsr(n_clusters=3, max_iter=100)
+
+# Ejecución del algoritmo
+kmedoids.fit(X)
+
+# Obtención de las etiquetas de los clusters
+labels = kmedoids.predict(X)
+
+# Representación gráfica de los clusters
+plt.scatter(X[:, 0], X[:, 1], c=labels)
+plt.scatter(kmedoids.medoids[:, 0], kmedoids.medoids[:, 1], marker='*', s=200, c='r')
 plt.show()
