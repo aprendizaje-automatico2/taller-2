@@ -14,3 +14,9 @@
    4.  Asignamos a cada vertice de la grafica el valor correspondiente a este eigenvector y agrupamos los vertices de G de acuerdo a su signo.
    5.  separamos los vertices negativos {A} y los vertices positivos {B}.  --> estos conjuntos ya entregan la particion de la gráfica.
 4. Se relaciona con los conceptos de clustering vistos en clase, aunque utilizan una tecnica que en lugar de usar directamente las caracteristicas para su seperacion, Clustering espectral primero transforma los datros en una representacion de un espacio de caracteristicas (a travez de los eigenvalores y eigenvectores).
+
+## Numeral 5.
+1. Implementandos
+2. Despues de plotear el dataset y sin ejecutar ninguna rutina de agrupamiento se pueden observar 4 clusters
+3. Calculados
+4. 4
