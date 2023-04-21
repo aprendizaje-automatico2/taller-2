@@ -15,6 +15,18 @@
    5.  separamos los vertices negativos {A} y los vertices positivos {B}.  --> estos conjuntos ya entregan la particion de la gráfica.
 4. Se relaciona con los conceptos de clustering vistos en clase, aunque utilizan una tecnica que en lugar de usar directamente las caracteristicas para su seperacion, Clustering espectral primero transforma los datros en una representacion de un espacio de caracteristicas (a travez de los eigenvalores y eigenvectores).
 
+## Numeral 2.
+
+El algoritmo DBSCAN (Density-Based Spatial Clustering of Applications with Noise) es un algoritmo de agrupamiento de datos que se basa en la densidad de los puntos. Es decir, agrupa los puntos que están cerca unos de otros y que están rodeados por otros puntos cercanos, y los puntos que están aislados se consideran como ruido.
+
+El algoritmo DBSCAN es útil para identificar grupos en datos que tienen formas arbitrarias y tamaños diferentes, y puede manejar datos ruidosos y con diferentes densidades. El algoritmo es especialmente útil en conjuntos de datos de alta dimensionalidad.
+
+El algoritmo DBSCAN se usa comúnmente en la minería de datos, la segmentación de imágenes, la identificación de anomalías y la clasificación de objetos.
+
+El fundamento matemático del algoritmo DBSCAN se basa en la definición de la densidad de un conjunto de puntos en un espacio. El algoritmo utiliza dos parámetros clave: el radio epsilon, que define la distancia máxima entre dos puntos para que se consideren vecinos cercanos, y el número mínimo de puntos que deben estar dentro del radio epsilon para que un punto sea considerado denso. Un punto se considera denso si tiene al menos el número mínimo de puntos dentro del radio epsilon, y un grupo se forma a partir de puntos densos que están conectados.
+
+El algoritmo DBSCAN no está directamente relacionado con Spectral Clustering, que es otro algoritmo de agrupamiento de datos. Sin embargo, ambos algoritmos pueden utilizarse para agrupar conjuntos de datos no lineales y de alta dimensionalidad. Spectral Clustering se basa en la teoría de grafos y utiliza técnicas de álgebra lineal para agrupar los datos. Ambos algoritmos pueden ser complementarios en la identificación de grupos en diferentes tipos de conjuntos de datos.
+
 ## Numeral 5.
 1. Implementandos
 2. Despues de plotear el dataset y sin ejecutar ninguna rutina de agrupamiento se pueden observar 4 clusters
