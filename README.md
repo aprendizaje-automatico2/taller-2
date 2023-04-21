@@ -27,6 +27,13 @@ El fundamento matemático del algoritmo DBSCAN se basa en la definición de la d
 
 El algoritmo DBSCAN no está directamente relacionado con Spectral Clustering, que es otro algoritmo de agrupamiento de datos. Sin embargo, ambos algoritmos pueden utilizarse para agrupar conjuntos de datos no lineales y de alta dimensionalidad. Spectral Clustering se basa en la teoría de grafos y utiliza técnicas de álgebra lineal para agrupar los datos. Ambos algoritmos pueden ser complementarios en la identificación de grupos en diferentes tipos de conjuntos de datos.
 
+## Numeral 3.
+El método del codo es una técnica comúnmente utilizada en Clustering para determinar el número óptimo de clusters en un conjunto de datos. El nombre del método se debe a que se busca el punto en el gráfico que se asemeja a un "codo", es decir, el punto donde la tasa de disminución de la varianza intra-cluster se aplanó significativamente.
+
+El método del codo implica trazar un gráfico de la varianza intra-cluster para diferentes valores de k (el número de clusters). La varianza intra-cluster es la suma de las distancias al cuadrado de cada punto en un cluster a su centroide. A medida que aumenta el número de clusters, la varianza intra-cluster tiende a disminuir, ya que los grupos se vuelven más homogéneos. Sin embargo, en algún punto, añadir más clusters no proporciona una mejora significativa en la varianza intra-cluster, y ese es el punto donde se encuentra el codo.
+
+Una de las principales desventajas del método del codo es que puede ser subjetivo, ya que el punto donde se encuentra el codo puede ser difícil de determinar en algunos casos. Además, el método del codo no siempre es efectivo en la identificación del número óptimo de clusters en conjuntos de datos con formas complejas o densidades variables. En tales casos, pueden ser necesarias técnicas más avanzadas para determinar el número óptimo de clusters, como la validación interna o externa de clusters, o la utilización de índices de evaluación de la calidad de la agrupación, como el índice de silueta
+
 ## Numeral 5.
 1. Implementandos
 2. Despues de plotear el dataset y sin ejecutar ninguna rutina de agrupamiento se pueden observar 4 clusters
