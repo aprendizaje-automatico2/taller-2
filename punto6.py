@@ -66,9 +66,9 @@ plt.show()
 
 # numero de clusters
 # Tipo de datos y numero de clusters
-X = blobs[0]
+X = noisy_moons[0]
 #range_n_clusters = [5]
-n_clusters = 3
+n_clusters = 2
 
 ########## k-means  ###########
 
@@ -293,7 +293,7 @@ ax1.set_ylim([0, len(X) + (n_clusters + 1) * 10])
 
 # Initialize the clusterer with n_clusters value and a random generator
 # seed of 10 for reproducibility.
-clusterer = DBSCAN(eps=0.5, min_samples=5).fit(X)
+clusterer = DBSCAN(eps=0.3, min_samples=10).fit(X)
 cluster_labels = clusterer.labels_
 
 # The silhouette_score gives the average value for all the samples.
